@@ -40,3 +40,4 @@ terraform.rc
 examples/
 tmp/
 kubeconfig.yaml
+outputs.json

@@ -35,7 +35,7 @@ if [ -z "$REGISTRY_PASSWORD" ] || [ -z "$INGRESS_IP" ]; then
 fi
 
 # Check DNS with retries
-MAX_DNS_ATTEMPTS=30
+MAX_DNS_ATTEMPTS=1
 DNS_ATTEMPT=1
 until nslookup $REGISTRY_DOMAIN; do
   echo "Waiting for DNS to propagate (attempt $DNS_ATTEMPT/$MAX_DNS_ATTEMPTS)..."
@@ -54,7 +54,7 @@ if [[ ! $REGISTRY_DOMAIN =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 # Check login with retries
-MAX_LOGIN_ATTEMPTS=10
+MAX_LOGIN_ATTEMPTS=1
 LOGIN_ATTEMPT=1
 until docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD $REGISTRY_DOMAIN || [ $LOGIN_ATTEMPT -gt $MAX_LOGIN_ATTEMPTS ]; do
   echo "Login attempt $LOGIN_ATTEMPT failed, retrying in 10 seconds..."
