@@ -1,6 +1,6 @@
 output "kubeconfig_raw" {
   description = "Raw kubeconfig for the LKE cluster"
-  value       = base64decode(data.linode_lke_cluster.main.kubeconfig)
+  value       = base64decode(linode_lke_cluster.main.kubeconfig)
   sensitive   = true
 }
 

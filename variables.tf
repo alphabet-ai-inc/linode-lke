@@ -58,7 +58,7 @@ variable "env" {
   default = "dev"
 }
 
-variable "server_group_name" {
-  type    = string
-  default = "lke"
-}
+# variable "server_group_name" {
+#   type    = string
+#   default = "lke"
+# }

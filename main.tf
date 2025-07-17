@@ -12,7 +12,6 @@ resource "linode_lke_cluster" "main" {
       count = pool.value["count"]
     }
   }
-
 }
 
 # Object Storage bucket for Docker Registry
