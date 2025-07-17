@@ -1,11 +1,11 @@
 variable "cluster_name" {
   description = "LKE cluster name"
   type        = string
-  default     = "lke-docker-registry"
+  default     = "lke-main"
 }
 
 variable "region" {
-  description = "Region Linode"
+  description = "Region for LKE"
   type        = string
   default     = "us-ord"
 }
@@ -30,16 +30,6 @@ variable "pools" {
   ]
 }
 
-variable "main_domain" {
-  description = "Domain 2 level"
-  type        = string
-}
-
-variable "registry_domain" {
-  description = "Domain for Docker Registry"
-  type        = string
-}
-
 variable "registry_bucket_name" {
   description = "Bucket name for Docker Registry"
   type        = string
@@ -52,25 +42,23 @@ variable "object_storage_cluster_region" {
   default     = "us-ord"
 }
 
-variable "registry_username" {
-  description = "User name for Docker Registry"
-  type        = string
-  default     = "admin"
-}
-
-variable "email" {
-  description = "Email for Let's Encrypt"
-  type        = string
-}
-
 variable "tags" {
   description = "Tags for resources"
   type        = list(string)
-  default     = ["terraform", "lke", "docker-registry"]
+  default     = ["terraform", "lke"]
 }
 
-variable "ingress_namespace" {
-  description = "Namespace for NGINX Ingress Controller"
-  type        = string
-  default     = "ingress-nginx"
+variable "vault_url" {
+  type    = string
+  default = "https://vault.sushkovs.ru"
+}
+
+variable "env" {
+  type    = string
+  default = "prod"
+}
+
+variable "server_group_name" {
+  type    = string
+  default = "lke"
 }

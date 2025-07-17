@@ -1,21 +1,18 @@
 # https://registry.terraform.io/providers/linode/linode/latest/docs
 terraform {
+  required_version = "~> 1.12"
   required_providers {
     linode = {
       source  = "linode/linode"
       version = "2.40.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.37"
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.5"
     }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.17"
-    }
-    htpasswd = {
-      source  = "loafoe/htpasswd"
-      version = "~> 1.0"
+    vault = {
+      source = "hashicorp/vault"
+      version = "~> 5.1"
     }
   }
   backend "s3" {
@@ -41,24 +38,15 @@ provider "linode" {
 }
 
 data "linode_lke_cluster" "main" {
-  id = linode_lke_cluster.main.id
+  id         = linode_lke_cluster.main.id
+  depends_on = [linode_lke_cluster.main]
 }
-
 locals {
-  kubeconfig = yamldecode(base64decode(data.linode_lke_cluster.main.kubeconfig))
+  tokens = fileexists("~/.vault_tokens") ? yamldecode(file("~/.vault_tokens"))["tokens"] : {}
 }
 
-provider "kubernetes" {
-  host                   = local.kubeconfig.clusters[0].cluster.server
-  token                  = local.kubeconfig.users[0].user.token
-  cluster_ca_certificate = base64decode(local.kubeconfig.clusters[0].cluster["certificate-authority-data"])
+provider "vault" {
+  address          = var.vault_url
+  token            = local.tokens[var.env][var.server_group_name]
+  skip_child_token = true
 }
-
-provider "helm" {
-  kubernetes {
-    host                   = local.kubeconfig.clusters[0].cluster.server
-    token                  = local.kubeconfig.users[0].user.token
-    cluster_ca_certificate = base64decode(local.kubeconfig.clusters[0].cluster["certificate-authority-data"])
-  }
-}
-provider "htpasswd" {}

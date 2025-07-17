@@ -16,18 +16,18 @@ resource "linode_lke_cluster" "main" {
 }
 
 # Object Storage bucket for Docker Registry
-resource "linode_object_storage_bucket" "registry" {
-  region = var.region
+resource "linode_object_storage_bucket" "docker-registry" {
+  region = var.object_storage_cluster_region
   label  = var.registry_bucket_name
 }
 
 # Object Storage keys
-resource "linode_object_storage_key" "registry" {
-  label = "registry-key"
+resource "linode_object_storage_key" "docker-registry" {
+  label = "docker-registry-key"
 
   bucket_access {
-    bucket_name = linode_object_storage_bucket.registry.label
-    region      = var.region
+    bucket_name = linode_object_storage_bucket.docker-registry.label
+    region      = var.object_storage_cluster_region
     permissions = "read_write"
   }
 }

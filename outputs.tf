@@ -1,20 +1,22 @@
-output "docker_registry_password" {
-  description = "Docker registry password"
-  value       = random_password.registry_password.result
+output "kubeconfig_raw" {
+  description = "Raw kubeconfig for the LKE cluster"
+  value       = base64decode(data.linode_lke_cluster.main.kubeconfig)
   sensitive   = true
 }
 
-output "registry_url" {
-  description = "Docker Registry URL"
-  value       = "https://${var.registry_domain}"
+output "docker_registry_bucket" {
+  description = "Name of the object storage bucket for Docker Registry"
+  value       = linode_object_storage_bucket.docker-registry.label
 }
 
-output "ingress_ip" {
-  description = "NGINX Ingress Controller IP"
-  value       = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+output "docker_registry_object_storage_key" {
+  description = "Access key for docker registry object storage"
+  value       = linode_object_storage_key.docker-registry.access_key
+  sensitive   = true
 }
 
-output "registry_username" {
-  description = "Docker Registry username"
-  value       = var.registry_username
+output "docker_registry_object_storage_secret_key" {
+  description = "Secret key for docker registry object storage"
+  value       = linode_object_storage_key.docker-registry.secret_key
+  sensitive   = true
 }
