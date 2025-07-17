@@ -1,6 +1,8 @@
-cluster_name = "lke-cluster"
-region       = "us-ord"
-k8s_version  = "1.33"
+cluster_name      = "lke-cluster"
+server_group_name = "lke"
+env               = "stage"
+region            = "us-ord"
+k8s_version       = "1.33"
 pools = [
   {
     type  = "g6-standard-2"

@@ -55,7 +55,7 @@ variable "vault_url" {
 
 variable "env" {
   type    = string
-  default = "prod"
+  default = "dev"
 }
 
 variable "server_group_name" {
